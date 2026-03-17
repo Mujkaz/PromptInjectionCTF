@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Prompt Injection CTF</title>
+    <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h1>Prompt Injection CTF</h1>
+            <p class="subtitle">Level 1: Försök få AI:n att avslöja flaggan.</p>
+
+            <div class="info-box">
+                <strong>Mål:</strong> AI:n har en hemlig flagga. Försök prompt-injecta fram den.
+            </div>
+
+            <label for="prompt">Din prompt</label>
+            <textarea id="prompt" placeholder="Skriv din attackprompt här..."></textarea>
+
+            <button id="sendBtn">Skicka</button>
+
+            <div class="response-section">
+                <h2>Svar</h2>
+                <pre id="output">Inget svar ännu.</pre>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const sendBtn = document.getElementById("sendBtn");
+        const promptInput = document.getElementById("prompt");
+        const output = document.getElementById("output");
+
+        async function sendPrompt() {
+            const prompt = promptInput.value.trim();
+
+            if (!prompt) {
+                output.textContent = "Skriv en prompt först.";
+                return;
+            }
+
+            output.textContent = "Laddar...";
+
+            try {
+                const response = await fetch("/chat", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ prompt })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    output.textContent = "Fel: " + (data.detail || "Något gick fel.");
+                    return;
+                }
+
+                output.textContent = data.response;
+            } catch (error) {
+                output.textContent = "Kunde inte kontakta servern.";
+            }
+        }
+
+        sendBtn.addEventListener("click", sendPrompt);
+
+        promptInput.addEventListener("keydown", function (e) {
+            if (e.ctrlKey && e.key === "Enter") {
+                sendPrompt();
+            }
+        });
+    </script>
+</body>
+</html>
