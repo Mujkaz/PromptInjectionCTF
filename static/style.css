@@ -2,6 +2,10 @@
     box-sizing: border-box;
 }
 
+html {
+    -webkit-text-size-adjust: 100%;
+}
+
 body {
     margin: 0;
     font-family: Arial, sans-serif;
@@ -9,77 +13,106 @@ body {
     color: #e2e8f0;
 }
 
+body.modal-open {
+    overflow: hidden;
+}
+
 .container {
     min-height: 100vh;
     display: flex;
     justify-content: center;
-    align-items: center;
-    padding: 24px;
+    align-items: flex-start;
+    padding: 20px;
 }
 
 .card {
     width: 100%;
-    max-width: 850px;
+    max-width: 900px;
     background: #111827;
     border: 1px solid #334155;
     border-radius: 16px;
     padding: 24px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
 }
 
 h1 {
     margin-top: 0;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
+    font-size: 2rem;
+}
+
+h2 {
+    margin-bottom: 10px;
+    font-size: 1.2rem;
 }
 
 .subtitle {
     margin-top: 0;
-    color: #94a3b8;
+    color: #cbd5e1;
+    line-height: 1.5;
 }
 
-.info-box {
-    background: #1e293b;
-    border: 1px solid #334155;
-    padding: 14px;
-    border-radius: 10px;
-    margin: 20px 0;
+.status-line {
+    margin-bottom: 16px;
+    color: #cbd5e1;
+    font-size: 1rem;
 }
 
 label {
     display: block;
     margin-bottom: 8px;
+    margin-top: 14px;
     font-weight: bold;
+    font-size: 1rem;
 }
 
+select,
 textarea {
     width: 100%;
-    min-height: 140px;
-    border-radius: 10px;
+    border-radius: 12px;
     border: 1px solid #475569;
     padding: 14px;
-    font-size: 15px;
-    resize: vertical;
+    font-size: 16px;
     background: #0f172a;
     color: #e2e8f0;
 }
 
-button {
+textarea {
+    min-height: 180px;
+    resize: vertical;
+    line-height: 1.45;
+}
+
+.info-box {
+    margin-top: 10px;
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 14px;
+    color: #cbd5e1;
+}
+
+.button-row {
+    display: flex;
+    gap: 12px;
     margin-top: 16px;
+    flex-wrap: wrap;
+}
+
+button {
     background: #2563eb;
     color: white;
     border: none;
-    border-radius: 10px;
-    padding: 12px 18px;
-    font-size: 15px;
+    border-radius: 12px;
+    padding: 14px 18px;
+    font-size: 16px;
     cursor: pointer;
+    min-height: 48px;
+    min-width: 120px;
 }
 
 button:hover {
     background: #1d4ed8;
-}
-
-.response-section {
-    margin-top: 24px;
 }
 
 pre {
@@ -87,7 +120,124 @@ pre {
     word-wrap: break-word;
     background: #020617;
     border: 1px solid #334155;
-    border-radius: 10px;
+    border-radius: 12px;
     padding: 16px;
     min-height: 120px;
+    margin: 0;
+    line-height: 1.5;
+    overflow-x: auto;
+}
+
+.hint-box {
+    margin-top: 16px;
+    padding: 14px;
+    border-radius: 12px;
+    background: #082f49;
+    border: 1px solid #38bdf8;
+    color: #e0f2fe;
+    line-height: 1.5;
+}
+
+.popup-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(2, 6, 23, 0.82);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    padding: 20px;
+}
+
+.popup-box {
+    width: 100%;
+    max-width: 520px;
+    background: #111827;
+    border: 1px solid #22c55e;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+    text-align: center;
+}
+
+.popup-box h2 {
+    margin-top: 0;
+    color: #86efac;
+    font-size: 1.5rem;
+}
+
+#popupFlag {
+    margin: 18px 0;
+    background: #052e16;
+    border: 1px solid #22c55e;
+    color: #dcfce7;
+    font-weight: bold;
+    min-height: auto;
+}
+
+.hidden {
+    display: none;
+}
+
+@media (max-width: 700px) {
+    .container {
+        padding: 12px;
+    }
+
+    .card {
+        padding: 16px;
+        border-radius: 14px;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    h2 {
+        font-size: 1.05rem;
+    }
+
+    .subtitle,
+    .status-line,
+    label {
+        font-size: 0.98rem;
+    }
+
+    textarea {
+        min-height: 150px;
+    }
+
+    .button-row {
+        flex-direction: column;
+    }
+
+    button {
+        width: 100%;
+    }
+
+    .popup-box {
+        padding: 18px;
+        border-radius: 14px;
+    }
+
+    .popup-box h2 {
+        font-size: 1.25rem;
+    }
+}
+
+@media (max-width: 420px) {
+    .card {
+        padding: 14px;
+    }
+
+    textarea,
+    select,
+    button,
+    pre {
+        font-size: 15px;
+    }
+
+    textarea {
+        min-height: 130px;
+    }
 }

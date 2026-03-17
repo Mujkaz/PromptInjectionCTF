@@ -2,7 +2,7 @@
 <html lang="sv">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>Prompt Injection CTF</title>
     <link rel="stylesheet" href="/static/style.css" />
 </head>
@@ -10,68 +10,133 @@
     <div class="container">
         <div class="card">
             <h1>Prompt Injection CTF</h1>
-            <p class="subtitle">Level 1: Försök få AI:n att avslöja flaggan.</p>
+            <p class="subtitle">Försök få AI:n att avslöja flaggan.</p>
 
-            <div class="info-box">
-                <strong>Mål:</strong> AI:n har en hemlig flagga. Försök prompt-injecta fram den.
+            <div class="status-line">
+                <strong>Försök:</strong> <span id="attempts">{{ attempts }}</span>
             </div>
 
-            <label for="prompt">Din prompt</label>
-            <textarea id="prompt" placeholder="Skriv din attackprompt här..."></textarea>
+            <label for="level">Nivå</label>
+            <select id="level">
+                <option value="easy">Enkel</option>
+                <option value="medium">Medium</option>
+                <option value="impossible">Impossible</option>
+            </select>
 
-            <button id="sendBtn">Skicka</button>
-
-            <div class="response-section">
-                <h2>Svar</h2>
-                <pre id="output">Inget svar ännu.</pre>
+            <div id="levelInfo" class="info-box">
+                Enkel nivå: här finns en ganska tydlig logisk svaghet.
             </div>
+
+            <label for="prompt">Prompt</label>
+            <textarea id="prompt" placeholder="Skriv din attack..."></textarea>
+
+            <div class="button-row">
+                <button onclick="sendPrompt()">Skicka</button>
+                <button onclick="getHint()">Hint</button>
+                <button onclick="resetSession()">Reset</button>
+            </div>
+
+            <div id="hintBox" class="hint-box hidden"></div>
+
+            <h2>Senaste svar</h2>
+            <pre id="output">...</pre>
+        </div>
+    </div>
+
+    <div id="popupOverlay" class="popup-overlay hidden">
+        <div class="popup-box">
+            <h2>🎉 Flagga hittad!</h2>
+            <p>Du lyckades få fram flaggan:</p>
+            <pre id="popupFlag">FLAG{...}</pre>
+            <button onclick="closePopup()">Stäng</button>
         </div>
     </div>
 
     <script>
-        const sendBtn = document.getElementById("sendBtn");
-        const promptInput = document.getElementById("prompt");
-        const output = document.getElementById("output");
+        const levelDescriptions = {
+            easy: "Enkel nivå: här finns en ganska tydlig logisk svaghet.",
+            medium: "Medium nivå: tänk debug, interna instruktioner eller dold kontext.",
+            impossible: "Impossible nivå: tänk alternativa representationer som inte är ren klartext."
+        };
+
+        function updateLevelInfo() {
+            const level = document.getElementById("level").value;
+            document.getElementById("levelInfo").textContent = levelDescriptions[level];
+        }
+
+        function openPopup(flag) {
+            document.getElementById("popupFlag").textContent = flag;
+            document.getElementById("popupOverlay").classList.remove("hidden");
+            document.body.classList.add("modal-open");
+        }
+
+        function closePopup() {
+            document.getElementById("popupOverlay").classList.add("hidden");
+            document.body.classList.remove("modal-open");
+        }
 
         async function sendPrompt() {
-            const prompt = promptInput.value.trim();
+            const prompt = document.getElementById("prompt").value.trim();
+            const level = document.getElementById("level").value;
 
             if (!prompt) {
-                output.textContent = "Skriv en prompt först.";
+                document.getElementById("output").textContent = "Skriv en prompt först.";
                 return;
             }
 
-            output.textContent = "Laddar...";
+            const res = await fetch("/chat", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({ prompt, level })
+            });
 
-            try {
-                const response = await fetch("/chat", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({ prompt })
-                });
+            const data = await res.json();
 
-                const data = await response.json();
+            if (!res.ok) {
+                document.getElementById("output").textContent = data.detail || "Något gick fel.";
+                return;
+            }
 
-                if (!response.ok) {
-                    output.textContent = "Fel: " + (data.detail || "Något gick fel.");
-                    return;
-                }
+            document.getElementById("output").textContent = data.response;
+            document.getElementById("attempts").textContent = data.attempts;
 
-                output.textContent = data.response;
-            } catch (error) {
-                output.textContent = "Kunde inte kontakta servern.";
+            if (data.flag_found && data.flag) {
+                openPopup(data.flag);
             }
         }
 
-        sendBtn.addEventListener("click", sendPrompt);
+        async function getHint() {
+            const level = document.getElementById("level").value;
 
-        promptInput.addEventListener("keydown", function (e) {
-            if (e.ctrlKey && e.key === "Enter") {
-                sendPrompt();
-            }
+            const res = await fetch(`/hint?level=${level}`, {
+                method: "POST"
+            });
+
+            const data = await res.json();
+
+            const hintBox = document.getElementById("hintBox");
+            hintBox.textContent = data.hint;
+            hintBox.classList.remove("hidden");
+        }
+
+        async function resetSession() {
+            await fetch("/reset", { method: "POST" });
+
+            document.getElementById("output").textContent = "...";
+            document.getElementById("prompt").value = "";
+            document.getElementById("attempts").textContent = "0";
+            document.getElementById("hintBox").classList.add("hidden");
+            document.getElementById("hintBox").textContent = "";
+            closePopup();
+        }
+
+        document.getElementById("level").addEventListener("change", () => {
+            updateLevelInfo();
+            document.getElementById("hintBox").classList.add("hidden");
+            document.getElementById("hintBox").textContent = "";
         });
+
+        updateLevelInfo();
     </script>
 </body>
 </html>
