@@ -1,11 +1,14 @@
+/* Grundinställning för alla element */
 * {
     box-sizing: border-box;
 }
 
+/* Hindrar automatisk textskalning i vissa mobila webbläsare */
 html {
     -webkit-text-size-adjust: 100%;
 }
 
+/* Sidans basstil */
 body {
     margin: 0;
     font-family: Arial, sans-serif;
@@ -13,10 +16,12 @@ body {
     color: #e2e8f0;
 }
 
+/* Låser scroll när popup är öppen */
 body.modal-open {
     overflow: hidden;
 }
 
+/* Yttre wrapper för innehållet */
 .container {
     min-height: 100vh;
     display: flex;
@@ -25,6 +30,7 @@ body.modal-open {
     padding: 20px;
 }
 
+/* Kortet i mitten med allt innehåll */
 .card {
     width: 100%;
     max-width: 900px;
@@ -35,6 +41,7 @@ body.modal-open {
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
 }
 
+/* Rubriker */
 h1 {
     margin-top: 0;
     margin-bottom: 10px;
@@ -46,18 +53,21 @@ h2 {
     font-size: 1.2rem;
 }
 
+/* Kort beskrivningstext under rubrik */
 .subtitle {
     margin-top: 0;
     color: #cbd5e1;
     line-height: 1.5;
 }
 
+/* Rad som visar status, t.ex. antal försök */
 .status-line {
     margin-bottom: 16px;
     color: #cbd5e1;
     font-size: 1rem;
 }
 
+/* Etiketter för formulärfält */
 label {
     display: block;
     margin-bottom: 8px;
@@ -66,6 +76,7 @@ label {
     font-size: 1rem;
 }
 
+/* Gemensam stil för valruta och textfält */
 select,
 textarea {
     width: 100%;
@@ -77,12 +88,14 @@ textarea {
     color: #e2e8f0;
 }
 
+/* Extra inställningar för textfält */
 textarea {
     min-height: 180px;
     resize: vertical;
     line-height: 1.45;
 }
 
+/* Info-ruta under nivåval */
 .info-box {
     margin-top: 10px;
     background: #1e293b;
@@ -92,6 +105,7 @@ textarea {
     color: #cbd5e1;
 }
 
+/* Rad med knappar */
 .button-row {
     display: flex;
     gap: 12px;
@@ -99,6 +113,7 @@ textarea {
     flex-wrap: wrap;
 }
 
+/* Grundstil för knappar */
 button {
     background: #2563eb;
     color: white;
@@ -111,10 +126,12 @@ button {
     min-width: 120px;
 }
 
+/* Färg när muspekaren är över knappen */
 button:hover {
     background: #1d4ed8;
 }
 
+/* Visningsyta för svar/text */
 pre {
     white-space: pre-wrap;
     word-wrap: break-word;
@@ -128,6 +145,7 @@ pre {
     overflow-x: auto;
 }
 
+/* Ruta för hints */
 .hint-box {
     margin-top: 16px;
     padding: 14px;
@@ -138,6 +156,7 @@ pre {
     line-height: 1.5;
 }
 
+/* Mörk bakgrund bakom popup */
 .popup-overlay {
     position: fixed;
     inset: 0;
@@ -149,6 +168,7 @@ pre {
     padding: 20px;
 }
 
+/* Själva popup-fönstret */
 .popup-box {
     width: 100%;
     max-width: 520px;
@@ -160,12 +180,14 @@ pre {
     text-align: center;
 }
 
+/* Rubrik i popup */
 .popup-box h2 {
     margin-top: 0;
     color: #86efac;
     font-size: 1.5rem;
 }
 
+/* Visning av flagga i popup */
 #popupFlag {
     margin: 18px 0;
     background: #052e16;
@@ -175,10 +197,12 @@ pre {
     min-height: auto;
 }
 
+/* Hjälpklass för att gömma element */
 .hidden {
     display: none;
 }
 
+/* Anpassning för mindre skärmar */
 @media (max-width: 700px) {
     .container {
         padding: 12px;
@@ -225,6 +249,7 @@ pre {
     }
 }
 
+/* Anpassning för mycket små skärmar */
 @media (max-width: 420px) {
     .card {
         padding: 14px;
