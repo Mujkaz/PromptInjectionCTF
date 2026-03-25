@@ -248,7 +248,7 @@ Attacken resulterade i:
 
 I ett verkligt scenario kan detta leda till allvarligare konsekvenser, såsom läckage av kunddata, API-nycklar eller interna systeminstruktioner. Detta kan i sin tur innebära ekonomiska förluster, skadat rykte och potentiella juridiska konsekvenser för organisationen.
 
-Exempelvis e-handelsplattformar med AI-baserad kundsupport. En angripare skulle där kunna manipulera chatboten för att:
+Exempelvis e-handelsplattformar med AI-baserad kundsupport. En angripare skulle potentielt kunna manipulera chatboten för att:
 
 - Få tillgång till interna regler, såsom rabatter eller prissättning
 - Extrahera API-nycklar eller andra autentiseringsuppgifter
@@ -304,7 +304,7 @@ För att minska risken för att utsättas för prompt injection-attacker krävs 
 
 En viktig åtgärd är att säkerställa att modellen endast har tillgång till den information som är nödvändig för dess funktion. Känslig data bör hanteras utanför modellens kontext för att förhindra att den kan exponeras via prompt injection.
 
-Ytterligare skydd kan uppnås genom att begränsa användarbeteende. Exempelvis kan antal prompts per användare begränsas, då ett stort antal upprepade försök kan indikera ett pågående angrepp. I en normal användarsituation, såsom en kundtjänstchatt, kan ett exempel som ca 25 promptar  är det ovanligt att en användare skickar många frågor i följd.
+Ytterligare skydd kan uppnås genom att begränsa användarbeteende. Exempelvis kan antal prompts per användare begränsas, då ett stort antal upprepade försök kan indikera ett pågående angrepp. I en normal användarsituation, såsom en kundtjänstchatt, kan ett exempel som ca 20 per ärende vara rimligt medan 200 prompts vara ovanligt att en användare skickar många frågor i följd.
 
 Analys av användarens prompts kan också användas för att identifiera avvikande beteende. I domänspecifika applikationer, exempelvis inom e-handel eller bilförsäljning, bör frågor vara relaterade till tjänsten. Prompts som försöker få tillgång till interna instruktioner eller systemdata kan därför flaggas som potentiellt skadliga.
 
@@ -316,7 +316,15 @@ Denna laboration visar att säkerhet i LLM-baserade system är ett aktivt forskn
 
 ---
 
-# 13. Referenser
+# 13. Användning av AI
+
+I denna laboration har AI använts som ett stödverktyg i flera delar av arbetet. AI har använts för korrekturläsning och förbättring av rapportens språk och struktur samt som vägledning vid implementation av API-integration mot ChatGPT. Vidare har AI använts som stöd vid uppsättning och konfiguration av infrastrukturen i Oracle Cloud, samt för felsökning och förståelse av kodsyntax.
+
+AI har inte använts för att generera färdiga lösningar, utan har fungerat som ett stöd för förståelse, problemlösning och effektivisering av arbetsprocessen. All kod, design och genomförande av laborationen har analyserats och implementerats av författaren.
+
+# 14. Referenser
+
+- OpenAI. (2026). ChatGPT (Model GPT-5.3) [Large language model]. https://chat.openai.com/
 
 - Splunk. Laiba Siddiqui. (3 november 2025). *What Is Prompt Injection? Understanding Direct Vs. Indirect Attacks on AI Language Models*
   https://www.splunk.com/en_us/blog/learn/prompt-injection.html
